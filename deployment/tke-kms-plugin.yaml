@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: tke-kms-plugin
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: tke-kms-plugin
+  template:
+    metadata:
+      labels:
+        name: tke-kms-plugin
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      hostNetwork: true
+      restartPolicy: Always
+      volumes:
+        - name: tke-kms-plugin-dir
+          hostPath:
+            path: /var/run/tke-kms-plugin
+            type: DirectoryOrCreate
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: tke-kms-plugin
+          image: ccr.ccs.tencentyun.com/tke-plugin/tke-kms-plugin:1.0.0
+          command:
+            - /tke-kms-plugin
+            - --region={{REGION}}
+            - --key-id={{KEY_ID}}
+            - --unix-socket=/var/run/tke-kms-plugin/server.sock
+            - --v=2
+          livenessProbe:
+            exec:
+              command:
+                - /tke-kms-plugin
+                - health-check
+                - --unix-socket=/var/run/tke-kms-plugin/server.sock
+            initialDelaySeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+            periodSeconds: 30
+          env:
+            - name: SECRET_ID
+              value: {{SECRET_ID}}
+            - name: SECRET_KEY
+              value: {{SECRET_KEY}}
+          volumeMounts:
+            - name: tke-kms-plugin-dir
+              mountPath: /var/run/tke-kms-plugin
+              readOnly: false
