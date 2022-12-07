@@ -26,7 +26,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: tke-kms-plugin
-          image: ccr.ccs.tencentyun.com/tke-plugin/tke-kms-plugin:1.0.0
+          image: tkeplugin/tke-kms-plugin:1.0.0
           command:
             - /tke-kms-plugin
             - --region={{REGION}}
