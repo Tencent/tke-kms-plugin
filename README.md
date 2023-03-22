@@ -25,7 +25,7 @@ docker push $REGISTRY/tke-kms-plugin:$VERSION
 ## Configuring the KMS provider
 ### Deploy KMS provider plugin
 1. Create a new key of type `ENCRYPT_DECRYPT`(对称加解密) at [KMS Console](https://console.cloud.tencent.com/kms2)
-2. Create a new CAM Secret at [CAM console](https://console.cloud.tencent.com/cam) or use an existing one.
+2. Create a new CAM Secret at [CAM console](https://console.cloud.tencent.com/cam) or use an existing one(The secret should at least be allowed do the following actions : `"kms:Decrypt", "kms:DescribeKey", "kms:Encrypt", "kms:ReEncrypt"`).
 3. Replace following placeholders in [tke-kms-plugin.yaml](deployment/tke-kms-plugin.yaml):
   - `{{REGION}}`: the region of KMS service, valid values: `ap-beijing`, `ap-guangzhou`, `ap-shanghai`
   - `{{KEY_ID}}`: the id (in UUID format) of the KMS key you just created
