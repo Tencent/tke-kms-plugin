@@ -1,3 +1,8 @@
+# !!! Deprecated !!!
+Now Tecnet TKE supporting KMS integration as an option, no need to install the plugin separately.
+
+For details, refer to [使用 KMS 进行 Kubernetes 数据加密](https://cloud.tencent.com/document/product/457/45594)
+
 # Kubernetes KMS provider plugin, backed by Tencent Cloud KMS service
 
 ## Overview
